@@ -35,7 +35,7 @@ export let utils = {
     }
 };
 
-// context creation tool
+// context creation tool (note that you can always get the canvas from gl context)
 export function get(id, contextType_opt) {
     if(contexts[id])
         return contexts[id];

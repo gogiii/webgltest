@@ -6,17 +6,6 @@
 // ONLY meshes supported, NO materials, nodes, etc
 // ONLY some attributes supported
 
-// component type
-const TYPE_BYTE = 5120;
-const TYPE_UBYTE = 5121;
-const TYPE_SHORT = 5122;
-const TYPE_USHORT = 5123;
-// const TYPE_INT = 5124; // not in specs 2.0?
-const TYPE_UINT = 5125;
-const TYPE_FLOAT = 5126;
-
-//export { TYPE_BYTE, TYPE_UBYTE, TYPE_SHORT, TYPE_USHORT, TYPE_UINT, TYPE_FLOAT };
-
 // field type
 const TYPE_SCALAR = "SCALAR";
 const TYPE_VEC2 = "VEC2";
@@ -108,14 +97,14 @@ export default async function(gl, url, attrMapping) {
 
             let indIdx = p.indices;
             if(indIdx === undefined) {
-                console.log("drawarrays not supported");
+                console.log("drawArrays not supported");
             }
             let indAccessor = accessors[indIdx];
             let indView = bufferViews[indAccessor.bufferView];
 
             let ibo = gl.createBuffer();
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
-            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(buffers[indView.buffer].arr, indView.byteOffset, indView.byteLength/Uint16Array.BYTES_PER_ELEMENT), gl.STATIC_DRAW);
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(buffers[indView.buffer].arr, indView.byteOffset, indView.byteLength), gl.STATIC_DRAW);
 
             let count  = indAccessor.count;
             let type = indAccessor.componentType;
