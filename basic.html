@@ -1,0 +1,34 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Basic WebGL init, no libraries</title>
+    </head>
+
+    <script type="text/javascript">
+        let gl, canvas;
+
+        function init() {
+            canvas = document.getElementById("canvas");
+            gl = canvas.getContext("webgl");
+            if(!gl) {
+                console.log("No gl context!");
+            }
+
+            requestAnimationFrame(frame);
+        }
+
+        function frame() {
+            gl.clearColor(1.0, 0.0, 0.0, 1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            //requestAnimationFrame(frame);
+        }
+
+        window.onload = init;
+    </script>
+
+    <body>
+        <canvas id="canvas" width="640" height="480"></canvas>
+    </body>
+
+</html>
