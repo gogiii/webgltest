@@ -38,7 +38,8 @@ const ATTR_WGT = "WEIGHT_0";
 
 //export { ATTR_POS, ATTR_NOR, ATTR_TAN, ATTR_TC0, ATTR_TC1, ATTR_COL, ATTR_JNT, ATTR_WGT };
 
-export default async function(gl, url, attrMapping) {
+// returns render function
+export default async function createGltf(gl, url, attrMapping) {
     let prog = gl.getParameter(gl.CURRENT_PROGRAM);
     
     let json = await (await fetch(url)).json();
