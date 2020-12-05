@@ -22,6 +22,12 @@ export let utils = {
         gl.attachShader(prog, vert);
         gl.attachShader(prog, frag);
         gl.linkProgram(prog);
+        //gl.validateProgram(prog);
+
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+            console.error("Link status: ", gl.getProgramInfoLog(prog));
+        }
+
         gl.useProgram(prog);
         return prog;
     },
@@ -36,11 +42,11 @@ export let utils = {
 };
 
 // context creation tool (note that you can always get the canvas from gl context)
-export function get(id, contextType_opt) {
+export function get(id, contextType_opt, contextSettings_opt) {
     if(contexts[id])
         return contexts[id];
     const canvas = document.getElementById(id);
-    const gl = canvas.getContext(contextType_opt || "webgl");
+    const gl = canvas.getContext(contextType_opt || "webgl", contextSettings_opt);
     contexts[id] = new Promise((resolve, reject)=>{
         resolve(gl);
     });

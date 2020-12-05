@@ -56,7 +56,8 @@ export default function createMesh(gl, mode, count, attrNameToArray, indices_opt
             
             gl.enableVertexAttribArray(id);
             gl.bindBuffer(gl.ARRAY_BUFFER, buffers[attr].vbo);
-            gl.vertexAttribPointer(id, 3, buffers[attr].type, isNormalized(buffers[attr].type), 0, 0);
+            let size = attrNameToArray[attr].length/count; // get attrib size from total values and rendered count
+            gl.vertexAttribPointer(id, size, buffers[attr].type, isNormalized(buffers[attr].type), 0, 0);
         }
 
         if(!indices_opt && !ibo) {

@@ -61,6 +61,7 @@ export default async function createGltf(gl, url, attrMapping) {
     }
 
     let renderFunction;
+    let mapping = [];
 
     // parse meshes
     for(var m of meshes) {
@@ -89,11 +90,18 @@ export default async function createGltf(gl, url, attrMapping) {
                     glAttr = attr;
                 }
 
-                gl.enableVertexAttribArray(glAttr);
+                /*gl.enableVertexAttribArray(glAttr);
                 let count = typeToCount[attrAccessor.type];
                 console.log("count", count, "for type", attrAccessor.type, "of attr", glAttr);
-                gl.vertexAttribPointer(glAttr, typeToCount[attrAccessor.type], attrAccessor.componentType, false, 0, byteOffset);
-                
+                gl.vertexAttribPointer(glAttr, typeToCount[attrAccessor.type], attrAccessor.componentType, false, 0, byteOffset);*/
+                let map = {
+                    buffer: buf.vbo,
+                    attr: glAttr,
+                    count: typeToCount[attrAccessor.type],
+                    type: attrAccessor.componentType,
+                    offset: byteOffset
+                };
+                mapping.push(map);
             }
 
             let indIdx = p.indices;
@@ -113,6 +121,12 @@ export default async function createGltf(gl, url, attrMapping) {
             let mode = (p.mode !== undefined)?p.mode:gl.TRIANGLES;
 
             renderFunction = () => {
+                mapping.forEach((m) => {
+                    gl.enableVertexAttribArray(m.attr);
+                    gl.bindBuffer(gl.ARRAY_BUFFER, m.buffer);
+                    gl.vertexAttribPointer(m.attr, m.count, m.type, false, 0, m.offset);
+                });
+                
                 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibo);
                 gl.drawElements(gl.TRIANGLES, count, type, 0);
             };
